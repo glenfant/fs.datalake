@@ -3,3 +3,5 @@
 *.pyo
 __pycache__/
 *.egg-info/
+.env
+sandbox/
