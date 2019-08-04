@@ -3,7 +3,7 @@ fs.datalake
 ===========
 
 `PythonFileSystem <https://www.pyfilesystem.org/>`_ extension for
-`Azure Datalake Storage <https://azure.microsoft.com/en-us/services/storage/data-lake-storage/>`_.
+`Azure Datalake Storage <https://azure.microsoft.com/en-us/services/storage/data-lake-storage/>`_ gen.1.
 
 PyFileSystem is a Filesystem abstraction for Python, that provides the same API on whatever storage backend (Hard drive,
 clouds, archive files, ...).
@@ -14,7 +14,8 @@ Azure Datalake Store is a cloud storage dedicated at big data Hadoop like operat
 
    **About Datalake store generation**
 
-   ``fs.datalake`` does not (yet) support Azure Datalake Store Gen. 2 backends.
+   ``fs.datalake``does not (yet) support Azure Datalake Store Gen. 2 backends as long as the underlying
+   ``azure-datalake-store`` Python library doesn't.
 
 Installation
 ============
@@ -76,13 +77,14 @@ Misc resources used for development
 * `PythonFileSystem documentation <https://docs.pyfilesystem.org/>`_
 * `Azure Datalake Storage`_
 * `azure datalake store Python lib <https://pypi.org/project/azure-datalake-store/>`_
+* https://docs.microsoft.com/azure/data-lake-store/data-lake-store-data-operations-python
 
 Source code
 -----------
 
-  https://www.mystuff.com/source
+  https://github.com/glenfant/fs.datalake
 
 Issue tracker
 -------------
 
-  http://www.mystuff.com/issues
+  https://github.com/glenfant/fs.datalake/issues
