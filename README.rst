@@ -14,7 +14,7 @@ Azure Datalake Store is a cloud storage dedicated at big data Hadoop like operat
 
    **About Datalake store generation**
 
-   ``fs.datalake``does not (yet) support Azure Datalake Store Gen. 2 backends as long as the underlying
+   ``fs.datalake`` does not (yet) support Azure Datalake Store Gen. 2 backends as long as the underlying
    ``azure-datalake-store`` Python library doesn't.
 
 Installation
