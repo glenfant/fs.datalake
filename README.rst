@@ -27,7 +27,7 @@ Installation
 Usage
 =====
 
-xxx more to say later ...
+As most backends for FS2, you may create a connection.
 
 Developer notes
 ===============
@@ -88,3 +88,40 @@ Issue tracker
 -------------
 
   https://github.com/glenfant/fs.datalake/issues
+
+Known issues and limitations
+============================
+
+Python 3.4 and older versions
+-----------------------------
+
+The first alpha release will support Python 3.5 and later. Older Python versions won't be supported unless
+contributions as PR that don't break the tests with later versions.
+
+As Python 2.7 support by FS2 is planned to be dropped, I won't add Python 2.x complicated compatibility layer, and won't
+accept PR for Python 2.7 support.
+
+Token lifetime
+--------------
+
+The authentication against Azure services provide a **one hour life token**. This is not a major issue for CLI
+applications but could be an issue for long time running processes.
+
+So I must find a way to refresh that token automatically (find what exception - if any - is raised from the lower level
+lib when trying to query the server with an outdated token)
+
+Datalake limitations
+--------------------
+
+Looking for doc about the various limitations of Datalake, and their consequences on this software.
+
+- What is the encoding of the file / directory names ?
+- Are there forbidden characters in the file / directory names
+- What's the size limit of file / directory names ?
+- Is there a limit of directory levels ?
+
+Cryptography
+------------
+
+There are lots of crypto options on Datalake storage. I have to admit that I am somehow stuck in that domain, and didn't
+provide specific features to play with encrypted Datalake stores. Any help in that field is welcome.
