@@ -18,6 +18,19 @@ RawInfo = Mapping[Text, Mapping[Text, object]]
 
 
 class DatalakeFS(FS):
+    # See https://docs.pyfilesystem.org/en/latest/reference/base.html#fs.base.FS.getmeta
+    _meta = {
+        "standard": {
+            "case_insensitive": True,
+            "invalid_path_chars": "",
+            "max_path_length": None,
+            "max_sys_path_length": None,
+            "network": True,
+            "read_only": False,
+            "supports_rename": True
+        }
+    }
+
     def __init__(self, tenant_id, store_name, username=None, password=None, client_id=None, client_secret=None):
         assert username or client_id, "You must provide one of 'username' or 'client_id' kw args"
         if username:
