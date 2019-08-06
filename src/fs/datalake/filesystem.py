@@ -31,12 +31,30 @@ class DatalakeFS(FS):
         }
     }
 
-    def __init__(self, tenant_id, store_name, username=None, password=None, client_id=None, client_secret=None):
+    def __init__(self, tenant_id: Text, store_name: Text, username: Text = None, password: Text = None,
+                 client_id: Text = None, client_secret: Text = None):
+        """
+        You should not provide both ``username`` / ``password`` params or ``client_id`` / ``client_secret``
+        params but not both.
+
+        Please read the Azure Datalake documentation about these parameters.
+
+        Args:
+            tenant_id: Provided by your Azure dashboard
+            store_name: Name of the Datalake store
+            username: Azure credentials
+            password: Azure credentials
+            client_id: Token
+            client_secret:
+        """
+        # Checking parameters
         assert username or client_id, "You must provide one of 'username' or 'client_id' kw args"
+        assert (username and client_id) is None, "You should not provide 'username' and 'client_id' kw args"
         if username:
             assert isinstance(password, str) and len(password), "You must provide 'password' kw arg"
         else:
             assert isinstance(client_secret, str) and len(client_secret), "You must provide 'client_secret' kw arg"
+
         # Warning, the token is valid for one hour.
         token = datalake_lib.auth(tenant_id=tenant_id, username=username, password=password, client_id=client_id,
                                   client_secret=client_secret)

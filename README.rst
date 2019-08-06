@@ -63,14 +63,21 @@ Example:
    # Play with your storage using the usual FS API
    print(datalake_storage.listdir("."))
 
-.. warning::
+.. admonition:: Warning
 
-   You may need to url_quote your username and password if these contain special characters like "/", "=", space
-   and some others.
+   You may need to "url_quote" your ``username`` and ``password`` if these contain special characters like "/", "=",
+   space and some others.
 
 You can read in the doc that the ``open_fs`` may take additional parameters after the URL. Note that with the
-``dtalake://...`` URLs, ``writable``, ``create`` and ```default_protocol`` are ignore. Though you may provide the
-``cwd`` keyword parameter.
+``dtalake://...`` URLs, ``writable``, ``create`` and ``default_protocol`` are ignore. Though you may provide the ``cwd``
+keyword parameter.
+
+Example:
+
+.. code:: python
+
+   datalake_storage = open_fs(url, cwd="some/directory")
+
 
 Authenticating with ``client_id`` and ``client_secret``
 -------------------------------------------------------
@@ -88,11 +95,12 @@ With the storage API:
    datalake_storage = DatalakeFS(tenant_id, storage_name, client_id=client_id,
                                  client_secret=client_secret)
 
-With the FS2 factory:
+With the FS2 factory, you need to put these data in the URL query:
 
 .. code:: python
 
    url = f"datalake://{tenant_id}/{storage_name}?client_id={client_id)&client_secret={client_secret}
+   datalake_storage = open_fs(url)
 
 .. warning::
 
@@ -113,7 +121,23 @@ Grab the source from the SCM repository, then ``cd`` to the root:
 
   $ pip install -e .[testing]
 
-Run the tests:
+Run the tests
+-------------
+
+Running the tests requires an Azure account and a Datalake Gen.1 storage which credentials must be provided through
+environment variables, namely:
+
+- ``DL_TENANT_ID``
+- ``DL_USERNAME``
+- ``DL_PASSWORD``
+- ``DL_CLIENT_ID``
+- ``DL_CLIENT_SECRET``
+- ``DL_STORE_NAME``
+
+Their respective content should be obvious if you have been reading all above documentation.
+
+You may provide these environment variables with a ``.env`` file in this project or a parent directory. This file will
+be loaded at the beginning of any test session.
 
 .. code:: console
 
