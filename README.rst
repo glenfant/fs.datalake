@@ -90,6 +90,7 @@ With the storage API:
 
 With the FS2 factory:
 
+.. code:: python
 
    url = f"datalake://{tenant_id}/{storage_name}?client_id={client_id)&client_secret={client_secret}
 
