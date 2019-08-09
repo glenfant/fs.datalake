@@ -25,13 +25,8 @@ username = os.getenv("DL_USERNAME")
 password = os.getenv("DL_PASSWORD")
 
 
-def make_fs_username():
-    filesystem = DatalakeFS(tenant_id, store_name, username=username, password=password)
-    filesystem.makedirs(remote_test_folder, recreate=True)
-    return filesystem.opendir(remote_test_folder, factory=ClosingSubFS)
-
-
-def make_fs_client_id():
-    filesystem = DatalakeFS(tenant_id, store_name, client_id=client_id, client_secret=client_secret)
+def make_fs():
+    filesystem = DatalakeFS(store_name, tenant_id=tenant_id, username=username, password=password,
+                            client_id=client_id, client_secret=client_secret)
     filesystem.makedirs(remote_test_folder, recreate=True)
     return filesystem.opendir(remote_test_folder, factory=ClosingSubFS)

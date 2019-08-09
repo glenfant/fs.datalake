@@ -34,15 +34,41 @@ Direct API
 
    from fs.datalake import DatalakeFS
 
-   tenant_id = "xxx"           # Provided by your Azure dashboard
    storage_name = "mystorage"  # Created through the Azure dashboard
+   tenant_id = "xxx"           # Provided by your Azure dashboard
    username = "myself"         # Your Azure dashboard credentials
    password = "my-secret"
 
-   datalake_storage = DatalakeFS(tenant_id, storage_name, username=username, password=password)
+   datalake_storage = DatalakeFS(storage_name, tenant_id=tenant_id, username=username, password=password)
 
    # Play with your storage using the usual FS API
    print(datalake_storage.listdir("."))
+
+.. note::
+
+   **About authentication methods**
+
+   The above example shows an authentication with a ``tenant_id``, a ``username`` and a ``password``.
+   This is an authentication method among others you might prefer. And I have t admit that I didn't
+   understand everything in the Azure Datalake security policies.
+
+   Just remember that all keyword parameters you provide to ``DatalakeFS`` are transfered as-is to the
+   ``azure.datalake.store.lib.auth`` that provides the session authentication token.
+
+   https://github.com/Azure/azure-data-lake-store-python/blob/master/azure/datalake/store/lib.py
+
+   In example, you could prefer, depending on your security settings in the Datalake dashboard using a
+   ``client_id`` and ``client_secret`` couple. This works too:
+
+   .. code:: python
+
+      storage_name = "mystorage"  # Created through the Azure dashboard
+      tenant_id = "xxx"           # Provided by your Azure dashboard
+      client_id = "yyyyy..."      # Your Azure dashboard credentials
+      client_secret = "zzzzz..."
+
+      datalake_storage = DatalakeFS(storage_name, tenant_id=tenant_id, client_id=client_id,
+                                    client_secret=client_secret)
 
 Using the ``open_fs`` factory
 -----------------------------
@@ -57,19 +83,25 @@ Example:
 
    from fs import open_fs
 
-   url = f"datalake://{username}:{password}@{tenant_id}/{storage_name}"
+   if authenticate_with_username_password:
+       url = f"datalake://{username}:{password}@{storage_name}?tenant_id={tenant_id}"
+   elif authenticate_with_client_id:
+       url = f"datalake://{storage_name}?tenant_id={tenant_id}&client_id={client_id}&claient_secret={client_secret}"
+   else:
+       # Please read azure-datalake-store doc for other authentication options.
+
    datalake_storage = open_fs(url)
 
    # Play with your storage using the usual FS API
    print(datalake_storage.listdir("."))
 
-.. admonition:: Warning
+.. warning::
 
-   You may need to "url_quote" your ``username`` and ``password`` if these contain special characters like "/", "=",
-   space and some others.
+   You may need to "url_quote" your ``username`` and ``password`` and other parameters if these contain special
+   characters like "/", "=", space and some others.
 
 You can read in the doc that the ``open_fs`` may take additional parameters after the URL. Note that with the
-``dtalake://...`` URLs, ``writable``, ``create`` and ``default_protocol`` are ignore. Though you may provide the ``cwd``
+``dtalake://...`` URLs, ``writable``, ``create`` and ``default_protocol`` are ignored. Though you may provide the ``cwd``
 keyword parameter.
 
 Example:
@@ -77,35 +109,6 @@ Example:
 .. code:: python
 
    datalake_storage = open_fs(url, cwd="some/directory")
-
-
-Authenticating with ``client_id`` and ``client_secret``
--------------------------------------------------------
-
-If you do not want to let your username and password in your scripts or configuration files, you may prefer to create
-a couple ``client_id`` and ``client_secret`` in your Azure dashboard and use these to authenticate in your app.
-
-With the storage API:
-
-.. code:: python
-
-   client_id = "xxxx..."      # Credentials hashes created in your Azure dashboard
-   client_secret = "yyyy..."
-
-   datalake_storage = DatalakeFS(tenant_id, storage_name, client_id=client_id,
-                                 client_secret=client_secret)
-
-With the FS2 factory, you need to put these data in the URL query:
-
-.. code:: python
-
-   url = f"datalake://{tenant_id}/{storage_name}?client_id={client_id)&client_secret={client_secret}
-   datalake_storage = open_fs(url)
-
-.. warning::
-
-   For the same reasons as above mentioned about special characters, you may need to "url_quote" ``client_id`` and
-   ``client_secret`` when inserting them in the query of an URL.
 
 Developer notes
 ===============

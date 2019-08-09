@@ -3,7 +3,7 @@
 import os
 import unittest
 
-from tests.resources import make_fs_username, make_fs_client_id
+from tests.resources import make_fs
 
 
 ###
@@ -34,8 +34,6 @@ class ResourceTest(unittest.TestCase):
         self.assertIn("DL_PASSWORD", os.environ)
         return
 
-    def test_make_fs_username(self):
-        make_fs_username()
-
-    def test_make_fs_client_id(self):
-        make_fs_client_id()
+    def test_make_fs(self):
+        dl_fs = make_fs()
+        dummy = 0
