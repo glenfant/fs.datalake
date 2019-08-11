@@ -8,5 +8,6 @@ PythonFileSystem extension for Azure Datalake Store
 
 from setuptools import setup
 
-dev_require = []
-setup()
+setup(
+    # All is in setup.cfg
+)
