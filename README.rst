@@ -5,8 +5,8 @@ fs.datalake
 `PythonFileSystem <https://www.pyfilesystem.org/>`_ extension for
 `Azure Datalake Storage <https://azure.microsoft.com/en-us/services/storage/data-lake-storage/>`_ gen.1.
 
-PyFileSystem is a Filesystem abstraction for Python, that provides the same API on whatever storage backend (Hard drive,
-clouds, archive files, ...).
+PyFileSystem is a filesystem abstraction for Python that provides the same API on whatever storage backend it supports
+(Hard drive, clouds, archive files, ...).
 
 Azure Datalake Store is a cloud storage dedicated at big data Hadoop like operations provided by Microsoft.
 
@@ -17,8 +17,18 @@ Azure Datalake Store is a cloud storage dedicated at big data Hadoop like operat
    ``fs.datalake`` does not (yet) support Azure Datalake Store Gen. 2 backends as long as the underlying
    ``azure-datalake-store`` Python library doesn't.
 
+.. warning::
+
+   **Alpha version**
+
+   This softare should not be used for production purposes, unless you tested it heavily with your application and
+   a sandbox Datalake store. The underlying ``azure-datalake-store`` Python package itself is not avowed stable
+   according to Microsoft contributors.
+
 Installation
 ============
+
+Install Python >= 3.6.
 
 .. code:: console
 
@@ -186,13 +196,37 @@ Issue tracker
 
   https://github.com/glenfant/fs.datalake/issues
 
+How to...
+=========
+
+Build safe URLs
+---------------
+
+As written above, some data provided in the ``datalake://...`` URLs must be quoted unless they are corrupted when
+building the ``DatalakeFS`` connector. This is a simple recipe for building a clean quoted URL:
+
+.. code:: python
+   from urllib.parse import urlunparse, urlencode, quote
+
+   query = {
+       # Provide all required parameters
+       "tenant_id": tenant_id,
+       "client_id": client_id,
+       "client_secret": client_secret
+   }
+   query = urlencode(query)
+   if username and password:
+       store_name = f"{quote(username)}:{quote(password)}@{store_name}"
+   parts = ("datalake", store_name, "", "", query, "")
+   datalake_url = urlunparse(parts)
+
 Known issues and limitations
 ============================
 
-Python 3.4 and older versions
+Python 3.5 and older versions
 -----------------------------
 
-The first alpha release will support Python 3.5 and later. Older Python versions won't be supported unless
+The first alpha release will support Python 3.6 and later. Older Python versions won't be supported unless
 contributions as PR that don't break the tests with later versions.
 
 As Python 2.7 support by FS2 is planned to be dropped, I won't add Python 2.x complicated compatibility layer, and won't
