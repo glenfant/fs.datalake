@@ -206,6 +206,7 @@ As written above, some data provided in the ``datalake://...`` URLs must be quot
 building the ``DatalakeFS`` connector. This is a simple recipe for building a clean quoted URL:
 
 .. code:: python
+
    from urllib.parse import urlunparse, urlencode, quote
 
    query = {
