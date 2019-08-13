@@ -87,8 +87,8 @@ class DatalakeFS(FS):
             # Expecting reply to https://github.com/Azure/azure-data-lake-store-python/issues/296
             # about Datalake timestamps
             raw_info["details"] = {
-                "accessed": dl_info["accessTime"] / 20,
-                "modified": dl_info["modificationTime"] / 20,
+                "accessed": dl_info["accessTime"] / 1000.0,
+                "modified": dl_info["modificationTime"] / 1000.0,
                 "size": dl_info["length"],
                 "type": details_type,
                 # Not provided by Datalake API
@@ -97,10 +97,10 @@ class DatalakeFS(FS):
             }
         if "access" in namespaces:
             int_permissions = int(dl_info["permission"], base=8)
-            permissions = Permissions.set(int_permissions)
+            permissions = Permissions.create(int_permissions)
             raw_info["access"] = {
                 "group": dl_info["group"],
-                "user": dl_info["user"],
+                "user": dl_info["owner"],
                 "permissions": permissions.dump()
             }
 
