@@ -1,7 +1,8 @@
-# Python artifacts
+# Python and tools artifacts
 *.pyc
 *.pyo
 __pycache__/
 *.egg-info/
 .env
 sandbox/
+.mypy_cache/
