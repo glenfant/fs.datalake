@@ -14,8 +14,7 @@ tests_directory = pathlib.Path(__file__).resolve().parent
 remote_test_folder = "/billy/test_datalakefs"
 
 # Loading test environment vars
-_dotenv_path = dotenv.find_dotenv()
-dotenv.load_dotenv(_dotenv_path)
+dotenv.load_dotenv(dotenv.find_dotenv())
 
 tenant_id = os.getenv("DL_TENANT_ID")
 store_name = os.getenv("DL_STORE_NAME")
